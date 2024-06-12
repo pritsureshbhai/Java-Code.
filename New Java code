@@ -1,0 +1,159 @@
+public class Product {
+    private int id;
+    private String name;
+    private int quantity;
+
+    public Product(int id, String name, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Product [ID=" + id + ", Name=" + name + ", Quantity=" + quantity + "]";
+    }
+}
+import java.util.HashMap;
+import java.util.Map;
+
+public class InventoryManager {
+    private Map<Integer, Product> inventory = new HashMap<>();
+
+    // Add a new product to the inventory
+    public void addProduct(Product product) {
+        inventory.put(product.getId(), product);
+        System.out.println("Product added: " + product);
+    }
+
+    // Update the quantity of an existing product
+    public void updateProductQuantity(int productId, int quantity) {
+        Product product = inventory.get(productId);
+        if (product != null) {
+            product.setQuantity(quantity);
+            System.out.println("Product quantity updated: " + product);
+        } else {
+            System.out.println("Product not found with ID: " + productId);
+        }
+    }
+
+    // Display all products in the inventory
+    public void displayInventory() {
+        System.out.println("Current Inventory:");
+        for (Product product : inventory.values()) {
+            System.out.println(product);
+        }
+    }
+
+    public static void main(String[] args) {
+        InventoryManager manager = new InventoryManager();
+        Product p1 = new Product(1, "Product A", 100);
+        Product p2 = new Product(2, "Product B", 150);
+
+        manager.addProduct(p1);
+        manager.addProduct(p2);
+
+        manager.displayInventory();
+
+        manager.updateProductQuantity(1, 120);
+        manager.displayInventory();
+    }
+}
+public class Order {
+    private int orderId;
+    private String product;
+    private int quantity;
+    private String status;
+
+    public Order(int orderId, String product, int quantity) {
+        this.orderId = orderId;
+        this.product = product;
+        this.quantity = quantity;
+        this.status = "Pending";
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order [Order ID=" + orderId + ", Product=" + product + ", Quantity=" + quantity + ", Status=" + status + "]";
+    }
+}
+import java.util.HashMap;
+import java.util.Map;
+
+public class OrderManager {
+    private Map<Integer, Order> orders = new HashMap<>();
+    private int nextOrderId = 1;
+
+    // Create a new order
+    public void createOrder(String product, int quantity) {
+        Order order = new Order(nextOrderId++, product, quantity);
+        orders.put(order.getOrderId(), order);
+        System.out.println("Order created: " + order);
+    }
+
+    // Update the status of an existing order
+    public void updateOrderStatus(int orderId, String status) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            order.setStatus(status);
+            System.out.println("Order status updated: " + order);
+        } else {
+            System.out.println("Order not found with ID: " + orderId);
+        }
+    }
+
+    // Display all orders
+    public void displayOrders() {
+        System.out.println("Current Orders:");
+        for (Order order : orders.values()) {
+            System.out.println(order);
+        }
+    }
+
+    public static void main(String[] args) {
+        OrderManager manager = new OrderManager();
+        manager.createOrder("Product A", 2);
+        manager.createOrder("Product B", 5);
+
+        manager.displayOrders();
+
+        manager.updateOrderStatus(1, "Shipped");
+        manager.displayOrders();
+    }
+}
